@@ -2,7 +2,7 @@ package main
 
 import (
 	// "fmt"
-	"decred/datab"
+	"decred-roi-api/datab"
 )
 
 // This method required adding a trust record to pg_hba.conf
@@ -16,6 +16,8 @@ const (
 )
 
 func main() {
-
-	testConnect, err := datab.DBTest()
+	databaseObj := datab.Database{}
+	databaseObj.DBTest()
+	
+	//testConnect, err := datab.DBTest()
 }
