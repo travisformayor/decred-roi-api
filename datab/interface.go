@@ -23,7 +23,7 @@ type Database struct {
 }
 
 // DBTest tests the db connection
-func (db *Database) DBTest() { // Question: what is 'error' doing in this line
+func (db *Database) DBTest() { 
 	
 	var err error
 
