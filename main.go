@@ -1,7 +1,7 @@
 package main
 
 import (
-	// "fmt"
+	"fmt"
 	"decred-roi-api/datab"
 )
 
@@ -16,8 +16,13 @@ const (
 )
 
 func main() {
-	databaseObj := datab.Database{}
-	databaseObj.DBTest()
-	
+	dbObj := datab.Database{}
+	dbObj.Connect()
+	result := dbObj.ReadDB(1)
+	result2 := dbObj.ReadDB(10)
+
+	fmt.Println(result)
+	fmt.Println(result2)
+
 	//testConnect, err := datab.DBTest()
 }

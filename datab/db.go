@@ -22,8 +22,8 @@ type Database struct {
 	pool *sql.DB
 }
 
-// DBTest tests the db connection
-func (db *Database) DBTest() { 
+// Connect connects to the sql db
+func (db *Database) Connect() { 
 	
 	var err error
 
@@ -36,7 +36,8 @@ func (db *Database) DBTest() {
 		panic(err)
 	}
 
-	defer db.pool.Close()
+	// ToDo: Question - proper way to handle closing db at end of program?
+	//defer db.pool.Close()
 
 	// ping the connection info to actually open the db
 	err = db.pool.Ping()
@@ -45,17 +46,20 @@ func (db *Database) DBTest() {
 	}
 
 	fmt.Println("Successfully connected!")
+}
 
-	// sqlStatement := `SELECT id, email FROM users WHERE id=$1;`
-	// var email string
-	// var id int
-	// row := db.pool.QueryRow(sqlStatement, 1)
-	// switch err := row.Scan(&id, &email); err {
-	// case sql.ErrNoRows:
-	// 	fmt.Println("No rows were returned!")
-	// case nil:
-	// 	fmt.Println(id, email)
-	// default:
-	// 	panic(err)
-	// }
+// ReadDB returns request id's info
+func (db *Database) ReadDB(index int) string {
+	sqlStatement := `SELECT id, email FROM users WHERE id=$1;`
+	var email string
+	var id int
+	row := db.pool.QueryRow(sqlStatement, index)
+	switch err := row.Scan(&id, &email); err {
+	case sql.ErrNoRows:
+		return fmt.Sprintf("No record with id %d found", index)
+	case nil:
+		return fmt.Sprintf("%d - %s", id, email)
+	default:
+		panic(err)
+	}
 }
