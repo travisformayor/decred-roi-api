@@ -9,17 +9,19 @@ import (
 func main() {
   dbObj := datab.Database{}
   dbObj.Connect()
-  //testConnect, err := datab.DBTest()
+  // ToDo: update connect with returning an error
+  // example: testConnect, err := datab.Connect()
+
   // result1 := dbObj.ReadDB(1)
   // result2 := dbObj.ReadDB(10)
-
   // fmt.Println(result1)
   // fmt.Println(result2)
+  dbObj.ManyRecords()
 
   fmt.Println(dbObj.CheckUserTable())
   //dbObj.InsertRecord()
   dbObj.UpdateRecord(4)
-  dbObj.DeleteRecord(2)
+  //dbObj.DeleteRecord(2)
 
   // // Create new instance of the People struct
   // fetchObj := fetchapi.People{}

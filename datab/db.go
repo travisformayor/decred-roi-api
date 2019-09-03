@@ -125,3 +125,26 @@ func (db *Database) ReadDB(index int) string {
 			panic(err)
 	}
 }
+
+// ManyRecords prints out multiple rows from the table
+func (db *Database) ManyRecords() {
+	rows, err := db.pool.Query("SELECT id, first_name FROM users LIMIT $1", 3)
+  if err != nil {
+    panic(err)
+  }
+  defer rows.Close()
+  for rows.Next() {
+    var id int
+    var firstName string
+    err = rows.Scan(&id, &firstName)
+    if err != nil {
+      panic(err)
+    }
+    fmt.Println(id, firstName)
+  }
+  // get any error encountered during iteration
+  err = rows.Err()
+  if err != nil {
+    panic(err)
+  }
+}
