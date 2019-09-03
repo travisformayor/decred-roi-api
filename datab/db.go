@@ -50,16 +50,24 @@ func (db *Database) Connect() {
 
 // ReadDB returns request id's info
 func (db *Database) ReadDB(index int) string {
-  sqlStatement := `SELECT id, email FROM users WHERE id=$1;`
-  var email string
-  var id int
-  row := db.pool.QueryRow(sqlStatement, index)
-  switch err := row.Scan(&id, &email); err {
-  case sql.ErrNoRows:
-    return fmt.Sprintf("No record with id %d found", index)
-  case nil:
-    return fmt.Sprintf("%d - %s", id, email)
-  default:
-    panic(err)
-  }
+	type User struct {
+		ID        int
+		//Age       int
+		//FirstName string
+		//LastName  string
+		Email     string
+	}
+	
+	sqlStatement := `SELECT id, email FROM users WHERE id=$1;`
+	var user User
+	row := db.pool.QueryRow(sqlStatement, index)
+	err := row.Scan(&user.ID, &user.Email)
+	switch err {
+		case sql.ErrNoRows:
+			return fmt.Sprintf("No record with id %d found", index)
+		case nil:
+			return fmt.Sprintf("%d - %s", user.ID, user.Email)
+		default:
+			panic(err)
+	}
 }
