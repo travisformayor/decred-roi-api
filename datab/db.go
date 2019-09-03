@@ -48,6 +48,14 @@ func (db *Database) Connect() {
   fmt.Println("Successfully connected!")
 }
 
+// CheckTable checks if table exists in the db
+func (db *Database) CheckTable(table string) (error) {
+	//sqlStatement := `SELECT id FROM users LIMIT 0;`
+	sqlStatement := fmt.Sprintf("SELECT id FROM %s LIMIT 0;", table)
+	_, err := db.pool.Query(sqlStatement)
+	return err
+}
+
 // ReadDB returns request id's info
 func (db *Database) ReadDB(index int) string {
 	type User struct {
