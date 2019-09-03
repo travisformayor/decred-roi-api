@@ -19,6 +19,7 @@ func main() {
   fmt.Println(dbObj.CheckUserTable())
   //dbObj.InsertRecord()
   dbObj.UpdateRecord(4)
+  dbObj.DeleteRecord(2)
 
   // // Create new instance of the People struct
   // fetchObj := fetchapi.People{}

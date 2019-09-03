@@ -86,6 +86,22 @@ func (db *Database) UpdateRecord(id int) {
 	fmt.Println(returnedID)
 }
 
+// DeleteRecord updates an existing record and prints the id
+func (db *Database) DeleteRecord(id int) {
+
+	sqlStatement := `
+		DELETE FROM users
+		WHERE id = $1
+		RETURNING id;`
+	var returnedID int
+	record := db.pool.QueryRow(sqlStatement, id)
+	err := record.Scan(&returnedID)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(returnedID)
+}
+
 // ReadDB returns request id's info
 func (db *Database) ReadDB(index int) string {
 	type User struct {
