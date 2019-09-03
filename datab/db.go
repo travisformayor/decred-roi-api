@@ -55,12 +55,12 @@ func (db *Database) CheckUserTable() error {
 	return err
 }
 
-// InsertRecord inserts a record and returns the id
+// InsertRecord inserts a record and prints the id
 func (db *Database) InsertRecord() {
 	sqlStatement := `
-	INSERT INTO users (age, email, first_name, last_name)
-	VALUES ($1, $2, $3, $4)
-	RETURNING id`
+		INSERT INTO users (age, email, first_name, last_name)
+		VALUES ($1, $2, $3, $4)
+		RETURNING id`
 	id := 0
 	record := db.pool.QueryRow(sqlStatement, 30, "jon@calhoun.io", "Jonathan", "Calhoun")
 	err := record.Scan(&id)
@@ -68,6 +68,22 @@ func (db *Database) InsertRecord() {
 		panic(err)
 	}
 	fmt.Println("New record ID is:", id)
+}
+
+// UpdateRecord updates an existing record and prints the id
+func (db *Database) UpdateRecord(id int) {
+	sqlStatement := `
+		UPDATE users
+		SET first_name = $2, last_name = $3
+		WHERE id = $1
+		RETURNING id;`
+	var returnedID int
+	record := db.pool.QueryRow(sqlStatement, id, "NewFirst", "NewLast")
+	err := record.Scan(&returnedID)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(returnedID)
 }
 
 // ReadDB returns request id's info
