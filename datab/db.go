@@ -48,12 +48,26 @@ func (db *Database) Connect() {
   fmt.Println("Successfully connected!")
 }
 
-// CheckTable checks if table exists in the db
-func (db *Database) CheckTable(table string) (error) {
-	//sqlStatement := `SELECT id FROM users LIMIT 0;`
-	sqlStatement := fmt.Sprintf("SELECT id FROM %s LIMIT 0;", table)
+// CheckUserTable checks if table exists in the db
+func (db *Database) CheckUserTable() error {
+	sqlStatement := `SELECT id FROM users LIMIT 0;`
 	_, err := db.pool.Query(sqlStatement)
 	return err
+}
+
+// InsertRecord inserts a record and returns the id
+func (db *Database) InsertRecord() {
+	sqlStatement := `
+	INSERT INTO users (age, email, first_name, last_name)
+	VALUES ($1, $2, $3, $4)
+	RETURNING id`
+	id := 0
+	record := db.pool.QueryRow(sqlStatement, 30, "jon@calhoun.io", "Jonathan", "Calhoun")
+	err := record.Scan(&id)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("New record ID is:", id)
 }
 
 // ReadDB returns request id's info

@@ -16,8 +16,8 @@ func main() {
   // fmt.Println(result1)
   // fmt.Println(result2)
 
-  fmt.Println(dbObj.CheckTable("uers"))
-  fmt.Println(dbObj.CheckTable("users"))
+  fmt.Println(dbObj.CheckUserTable())
+  dbObj.InsertRecord()
 
   // // Create new instance of the People struct
   // fetchObj := fetchapi.People{}
